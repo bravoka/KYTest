@@ -45,6 +45,14 @@
       "defaultValue": "Standard_D3_v2",
       "metadata": {
         "description": "Size of cluster search head VM"
+      },
+    "clusterSearchheadVmCount": {
+      "type": "int",
+      "defaultValue": 3,
+      "minValue": 3,
+      "maxValue": 20,
+      "metadata": {
+        "description":  "Count of search heads"
       }
     },
     "clusterIndexerVmSize": {
@@ -183,7 +191,7 @@
     },
     "templateLocation": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/splunk-on-ubuntu",
+      "defaultValue": "https://raw.githubusercontent.com/Bravoka/master/KYTest/",
       "metadata": {
         "description": "Template file location",
         "artifactsBaseUrl": "Base URL of the Publisher Template gallery package"
