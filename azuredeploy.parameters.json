@@ -17,6 +17,9 @@
     "clusterSearchheadVmSize": {
       "value": "Standard_D4_v2"
     },
+    "clusterSearchheadVmCount": {
+      "value": 3
+    },
     "clusterIndexerVmSize": {
       "value": "Standard_D3"
     },
