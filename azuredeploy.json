@@ -253,7 +253,7 @@
       "publicIPAddress": {
         "name": "[parameters('publicIPName')]",
         "domainNamePrefix": "[parameters('domainNamePrefix')]",
-        "count": "[add(2, parameters('clusterIndexerVmCount'))]",
+        "count": "[add(4, parameters('clusterIndexerVmCount'))]",
         "map": [
           "-cm", "-csh0", "-csh1", "-csh2",
           "-cp0", "-cp1", "-cp2", "-cp3", "-cp4",
@@ -274,6 +274,10 @@
       }
     },
     "tshirtSize": "[variables(concat('tshirtSize', parameters('deploymentType')))]",
+    "sa1": "[parameters('subnet1StartAddress')]",
+    "shIpOctet01": "[concat(split(variables('sa1'), '.')[0], '.', split(variables('sa1'), '.')[1], '.')]",
+    "shIpOctet2": "[int(split(variables('sa1'), '.')[2])]",
+    "shIpOctet3": "[int(split(variables('sa1'), '.')[3])]",
     "sa2": "[parameters('subnet2StartAddress')]",
     "ipOctet01": "[concat(split(variables('sa2'), '.')[0], '.', split(variables('sa2'), '.')[1], '.')]",
     "ipOctet2": "[int(split(variables('sa2'), '.')[2])]",
@@ -296,7 +300,11 @@
       },
       "statics": {
         "standaloneIp": "[parameters('subnet1StartAddress')]",
-        "clusterSearchheadIp": "[parameters('subnet1StartAddress')]",
+		"searchheadIps": {
+		  "shIpOctet01": "[variables('ipOctet01')]",
+          "shIpOctet2": "[add(variables('ipOctet2'), div(add(variables('ipOctet3'), 1), 255))]",
+          "shIpOctet3": "[mod(add(variables('ipOctet3'), 1), 255)]"
+		}
         "clusterMasterIp": "[parameters('subnet2StartAddress')]",
         "indexerIps": {
           "ipOctet01": "[variables('ipOctet01')]",
@@ -512,7 +520,7 @@
             "value": {
               "vmSize": "[variables('tshirtSize').clusterSearchheadVmSize]",
               "diskSize": "[variables('tshirtSize').diskSize]",
-              "staticIp": "[variables('networkSettings').statics.clusterSearchheadIp]",
+              "staticIps": "[variables('networkSettings').statics.searchheadIps]",
               "clusterMasterIp": "[variables('networkSettings').statics.clusterMasterIp]",
               "publicIPName": "[concat(variables('tshirtSize').publicIPAddress.name, '')]",
               "sshFrom": "[concat(parameters('sshFrom'), '')]",
