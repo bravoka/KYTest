@@ -255,7 +255,7 @@
         "domainNamePrefix": "[parameters('domainNamePrefix')]",
         "count": "[add(2, parameters('clusterIndexerVmCount'))]",
         "map": [
-          "", "-cm",
+          "-cm", "-csh0", "-csh1", "-csh2",
           "-cp0", "-cp1", "-cp2", "-cp3", "-cp4",
           "-cp5", "-cp6", "-cp7", "-cp8", "-cp9",
           "-cp10", "-cp11", "-cp12", "-cp13", "-cp14",
