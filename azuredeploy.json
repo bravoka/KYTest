@@ -304,7 +304,7 @@
 		  "shIpOctet01": "[variables('ipOctet01')]",
           "shIpOctet2": "[add(variables('ipOctet2'), div(add(variables('ipOctet3'), 1), 255))]",
           "shIpOctet3": "[mod(add(variables('ipOctet3'), 1), 255)]"
-		}
+		},
         "clusterMasterIp": "[parameters('subnet2StartAddress')]",
         "indexerIps": {
           "ipOctet01": "[variables('ipOctet01')]",
