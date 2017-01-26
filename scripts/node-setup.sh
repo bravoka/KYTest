@@ -45,6 +45,7 @@ set -e
 cat >> ~/vars.txt <<end
 hostname = ${HOSTNAME}
 uid = ${UID}
+optarg = ${OPTARG}
 end
 
 
