@@ -497,7 +497,7 @@
         }
       }
     },
-	{
+    {
       "apiVersion": "[variables('templateAPIVersion')]",
       "type": "Microsoft.Resources/deployments",
       "name": "clustersearchhead-deployment",
@@ -518,8 +518,8 @@
           },
           "machineSettings": {
             "value": {
-              "vmSize": "[variables('tshirtSize').clusterSearchheadVmSize]",    
-	      "vmCount": "[variables('tshirtSize').clusterSearchheadCount]",
+              "vmSize": "[variables('tshirtSize').clusterSearchheadVmSize]",
+              "vmCount": "[variables('tshirtSize').clusterSearchheadVmCount]",
               "diskSize": "[variables('tshirtSize').diskSize]",
               "staticIps": "[variables('networkSettings').statics.searchheadIps]",
               "clusterMasterIp": "[variables('networkSettings').statics.clusterMasterIp]",
