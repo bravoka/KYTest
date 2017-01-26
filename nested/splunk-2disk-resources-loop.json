@@ -47,9 +47,9 @@
     "publicIpName": "[parameters('machineSettings').publicIPName]",
     "clusterMasterIp": "[parameters('machineSettings').clusterMasterIp]",
     "securityGroupRef": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('securityGroupName'))]",
-    "ipOctet01": "[parameters('machineSettings').staticIps.shIpOctet01]",
-    "ipOctet2": "[parameters('machineSettings').staticIps.shIpOctet2]",
-    "ipOctet3": "[parameters('machineSettings').staticIps.shIpOctet3]"
+    "shIpOctet01": "[parameters('machineSettings').staticIps.shIpOctet01]",
+    "shIpOctet2": "[parameters('machineSettings').staticIps.shIpOctet2]",
+    "shIpOctet3": "[parameters('machineSettings').staticIps.shIpOctet3]"
   },
   "resources": [
     {
@@ -70,7 +70,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('ipOctet01'), add(variables('ipOctet2'), div(copyindex(variables('ipOctet3')), 255)), '.', mod(copyindex(variables('ipOctet3')), 255))]",
+              "privateIPAddress": "[concat(variables('shIpOctet01'), add(variables('shIpOctet2'), div(copyindex(variables('shIpOctet3')), 255)), '.', mod(copyindex(variables('ipOctet3')), 255))]",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), copyindex()))]"
               },
