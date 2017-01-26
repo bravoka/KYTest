@@ -255,7 +255,7 @@
         "domainNamePrefix": "[parameters('domainNamePrefix')]",
         "count": "[add(4, parameters('clusterIndexerVmCount'))]",
         "map": [
-          "-cm", "-csh0", "-csh1", "-csh2",
+          "-csh0", "-csh1", "-csh2", "-cm",
           "-cp0", "-cp1", "-cp2", "-cp3", "-cp4",
           "-cp5", "-cp6", "-cp7", "-cp8", "-cp9",
           "-cp10", "-cp11", "-cp12", "-cp13", "-cp14",
@@ -304,7 +304,7 @@
 		  "shIpOctet01": "[variables('ipOctet01')]",
           "shIpOctet2": "[add(variables('ipOctet2'), div(add(variables('ipOctet3'), 1), 255))]",
           "shIpOctet3": "[mod(add(variables('ipOctet3'), 1), 255)]"
-		},
+		}
         "clusterMasterIp": "[parameters('subnet2StartAddress')]",
         "indexerIps": {
           "ipOctet01": "[variables('ipOctet01')]",
