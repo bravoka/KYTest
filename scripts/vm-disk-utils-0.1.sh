@@ -141,6 +141,7 @@ is_partitioned() {
     OUTPUT=$(partx -s ${1} 2>&1)
 	cat >> ~/diskutilsdebug.txt <<end
 checkpoint function2
+partx 1 = ${1}
 out put = ${OUTPUT}
 end
 
@@ -245,6 +246,7 @@ do_partition() {
 	
 cat >> ~/diskutilsdebug.txt <<end
 checkpoint function5
+disk = ${_disk}
 type = ${_type}
 end
 
@@ -259,6 +261,12 @@ t
 ${_type}
 w"| fdisk "${_disk}"
 
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint function6
+type = ${_type}
+end
+
+
 #
 # Use the bash-specific $PIPESTATUS to ensure we get the correct exit code
 # from fdisk and not from echo
@@ -268,6 +276,11 @@ then
     echo "I cannot continue" >&2
     exit 2
 fi
+
+cat >> ~/diskutilsdebug.txt <<end
+do_partition completed successfully!
+end
+
 }
 #end do_partition
 
