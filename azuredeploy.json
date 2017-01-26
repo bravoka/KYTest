@@ -518,7 +518,7 @@
           },
           "machineSettings": {
             "value": {
-              "vmSize": "[variables('tshirtSize').clusterSearchheadVmSize]",
+              "vmSize": "[variables('tshirtSize').clusterSearchheadVmSize]",    
 	      "vmCount": "[variables('tshirtSize').clusterSearchheadCount]",
               "diskSize": "[variables('tshirtSize').diskSize]",
               "staticIps": "[variables('networkSettings').statics.searchheadIps]",
