@@ -38,11 +38,13 @@
 # Note : 
 # This script has only been tested on Ubuntu 12.04 LTS & 14.04.2-LTS and must be root
 
+
+
+set -e
+
 cat >> ~/vars.txt <<end
 hostname = ${HOSTNAME}
 uid = ${UID}
-optarg = ${OPTARG}
-noderole = ${NODE_ROLE}
 end
 
 
@@ -50,7 +52,6 @@ cat >> ~/debug.txt <<end
 checkpoint1
 end
 
-set -e
 
 help()
 {
