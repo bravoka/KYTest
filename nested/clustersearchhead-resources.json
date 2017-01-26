@@ -38,7 +38,7 @@
     "resourceAPIVersion": "2015-06-15",
     "splunkServerRole": "splunk_cluster_search_head",
     "securityGroupName": "[concat(parameters('namespace'), '-nsg')]",
-    "splunkTemplateUrl": "[concat(parameters('templateBaseUrl'), 'splunk-2disk-resources.json')]"
+    "splunkTemplateUrl": "[concat(parameters('templateBaseUrl'), 'splunk-2disk-resources-loop.json')]"
   },
   "resources": [
     {
