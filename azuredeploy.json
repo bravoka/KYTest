@@ -300,8 +300,8 @@
       },
       "statics": {
         "standaloneIp": "[parameters('subnet1StartAddress')]",
-		"searchheadIps": {
-		  "shIpOctet01": "[variables('ipOctet01')]",
+        "searchheadIps": {
+	  "shIpOctet01": "[variables('ipOctet01')]",
           "shIpOctet2": "[add(variables('ipOctet2'), div(add(variables('ipOctet3'), 1), 255))]",
           "shIpOctet3": "[mod(add(variables('ipOctet3'), 1), 255)]"
 		},
