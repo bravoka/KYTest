@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 
 # The MIT License (MIT)
 #
@@ -38,6 +38,18 @@
 # Note : 
 # This script has only been tested on Ubuntu 12.04 LTS & 14.04.2-LTS and must be root
 
+cat >> ~/vars.txt <<end
+hostname = ${HOSTNAME}
+uid = ${UID}
+optarg = ${OPTARG}
+noderole = ${NODE_ROLE}
+end
+
+
+cat >> ~/debug.txt <<end
+checkpoint1
+end
+
 set -e
 
 help()
@@ -52,11 +64,20 @@ help()
     echo "-h help"
 }
 
+cat >> ~/debug.txt <<end
+checkpoint2
+end
+
 # Log method to control log output
 log()
 {
     echo "`date`: $1"
 }
+
+cat >> ~/debug.txt <<end
+checkpoint3
+end
+
 
 # You must be root to run this script
 if [ "${UID}" -ne 0 ];
@@ -66,11 +87,24 @@ then
     exit 3
 fi
 
+cat >> ~/debug.txt <<end
+checkpoint4
+end
+
 # Parameters
 MY_IP="$(ip -4 address show eth0 | sed -rn 's/^[[:space:]]*inet ([[:digit:].]+)[/[:space:]].*$/\1/p')"
 
+cat >> ~/vars.txt <<end
+My ip = ${MY_IP}
+end
+
+
 DATA_MOUNTPOINT="/datadrive"
 SPLUNK_DB_DIR="${DATA_MOUNTPOINT}/splunk_db"
+
+cat >> ~/debug.txt <<end
+checkpoint5
+end
 
 # Arguments
 while getopts :r:p:c:i: optname; do
@@ -102,22 +136,54 @@ while getopts :r:p:c:i: optname; do
   esac
 done
 
+cat >> ~/debug.txt <<end
+checkpoint6
+end
+
+cat >> ~/vars.txt <<end
+Node role = ${NODE_ROLE}
+admin passwd = ${ADMIN_PASSWD}
+cluster master ip = ${CLUSTER_MASTER_IP}
+node index = ${NODE_INDEX} 
+end
+
+
+
 log "Started node-setup on ${HOSTNAME} with role ${NODE_ROLE}"
 
 # Retrieve new list of packages
 apt-get -y update
 
+cat >> ~/debug.txt <<end
+checkpoint7
+end
+
 log "Striping data disks into one volume mounted at ${DATA_MOUNTPOINT}"
 # Stripe data disks into one data volume where SPLUNK_DB will reside
 chmod u+x vm-disk-utils-0.1.sh && ./vm-disk-utils-0.1.sh -s -p $DATA_MOUNTPOINT
 
+cat >> ~/debug.txt <<end
+checkpoint8
+end
+
 # Update Chef data bag with custom user credentials
 sed -i "s/notarealpassword/${ADMIN_PASSWD}/" /etc/chef/repo/data_bags/vault/splunk__default.json
+
+cat >> ~/debug.txt <<end
+checkpoint9
+end
 
 # Update Chef placeholder nodes with existing resources data
 if [ -n "${CLUSTER_MASTER_IP}" ]; then
   sed -i "s/<INSERT_IP_ADDRESS>/${CLUSTER_MASTER_IP}/" /etc/chef/repo/nodes/cluster-master.json
 fi
+
+cp /etc/chef/repo/nodes/cluster-master.json ~/cluster-master.json
+
+
+cat >> ~/debug.txt <<end
+checkpoint10
+end
 
 # Write Chef node file with appropriate role and custom attributes
 cat >/etc/chef/node.json <<end
@@ -146,11 +212,22 @@ cat >/etc/chef/node.json <<end
 }
 end
 
+cp /etc/chef/node.json ~/node.json
+
+
+cat >> ~/debug.txt <<end
+checkpoint11
+end
+
 # Write Chef client configs
 cat >/etc/chef/client.rb <<end
 log_level :info
 log_location STDOUT
 chef_repo_path "/etc/chef/repo"
+end
+
+cat >> ~/debug.txt <<end
+checkpoint12
 end
 
 log "Update iptables before running Splunk"
@@ -164,14 +241,25 @@ ip6tables -t nat -A PREROUTING -p udp -m udp --dport 514 -j REDIRECT --to-ports 
 ip6tables -t nat -A PREROUTING -p tcp -m tcp --dport 514 -j REDIRECT --to-ports 10514
 ip6tables-save > /etc/iptables/rules.v6
 
+cat >> ~/debug.txt <<end
+checkpoint13
+end
+
 log "Configuring Splunk"
 # Finally configure Splunk using chef client in local mode
 chef-client -z -c /etc/chef/client.rb -j /etc/chef/node.json
 
+cat >> ~/debug.txt <<end
+checkpoint14
+end
+
 # Cleanup after ourselves - remove chef repo including data bag
 rm -rf /etc/chef/repo
+
+cat >> ~/debug.txt <<end
+checkpoint15
+end
 
 log "Finished node-setup on ${HOSTNAME} with role ${NODE_ROLE}"
 
 exit 0
-
