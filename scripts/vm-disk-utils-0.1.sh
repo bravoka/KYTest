@@ -36,6 +36,12 @@
 # Note : 
 # This script has only been tested on Ubuntu 12.04 LTS and must be root
 
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint1
+uid = ${UID}
+end
+
+
 help()
 {
     echo "Usage: $(basename $0) [-b data_base | -p data_path] [-h] [-s]"
@@ -54,12 +60,17 @@ log()
     echo "$1"
 }
 
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint2
+end
+
 if [ "${UID}" -ne 0 ];
 then
     log "Script executed without root permissions"
     echo "You must be root to run this program." >&2
     exit 3
 fi
+
 
 #A set of disks to ignore from partitioning and formatting
 BLACKLIST="/dev/sda|/dev/sdb"
@@ -68,6 +79,11 @@ BLACKLIST="/dev/sda|/dev/sdb"
 DATA_BASE="/datadisks"
 # Full path for data drive in case of RAID configuration
 DATA_PATH="/datadrive"
+
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint3
+blacklist = ${BLACKLIST}
+end
 
 
 while getopts b:p:sh optname; do
@@ -94,9 +110,20 @@ while getopts b:p:sh optname; do
   esac
 done
 
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint4
+raidconfiguration = ${RAID_CONFIGURATION}
+end
+
 get_next_md_device() {
     shopt -s extglob
     LAST_DEVICE=$(ls -1 /dev/md+([0-9]) 2>/dev/null|sort -n|tail -n1)
+	
+	cat >> ~/diskutilsdebug.txt <<end
+checkpoing function1
+last device = ${LAST_DEVICE}
+end
+	
     if [ -z "${LAST_DEVICE}" ]; then
         NEXT=/dev/md0
     else
@@ -106,8 +133,17 @@ get_next_md_device() {
     echo ${NEXT}
 }
 
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint5
+end
+
 is_partitioned() {
     OUTPUT=$(partx -s ${1} 2>&1)
+	cat >> ~/diskutilsdebug.txt <<end
+checkpoint function2
+out put = ${OUTPUT}
+end
+
     egrep "partition table does not contains usable partitions|failed to read partition table" <<< "${OUTPUT}" >/dev/null 2>&1
     if [ ${?} -eq 0 ]; then
         return 1
@@ -116,8 +152,19 @@ is_partitioned() {
     fi    
 }
 
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint6
+end
+
 has_filesystem() {
     DEVICE=${1}
+
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint functino3
+Device = ${DEVICE}
+end
+
+	
     OUTPUT=$(file -L -s ${DEVICE})
     grep filesystem <<< "${OUTPUT}" > /dev/null 2>&1
     return ${?}
@@ -173,6 +220,13 @@ get_next_mountpoint() {
 add_to_fstab() {
     UUID=${1}
     MOUNTPOINT=${2}
+	
+	cat >> ~/diskutilsdebug.txt <<end
+checkpoint function4
+Mountpoint = ${MOUNTPOINT}
+end
+	
+	
     grep "${UUID}" /etc/fstab >/dev/null 2>&1
     if [ ${?} -eq 0 ];
     then
@@ -188,6 +242,12 @@ do_partition() {
 # disk, using all available space
     _disk=${1}
     _type=${2}
+	
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint function5
+type = ${_type}
+end
+
     if [ -z "${_type}" ]; then
         # default to Linux partition type (ie, ext3/ext4/xfs)
         _type=83
@@ -211,6 +271,10 @@ fi
 }
 #end do_partition
 
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint7
+end
+
 scan_partition_format()
 {
     log "Begin scanning and formatting data disks"
@@ -233,6 +297,12 @@ scan_partition_format()
             do_partition ${DISK}
         fi
         PARTITION=$(fdisk -l ${DISK}|grep -A 1 Device|tail -n 1|awk '{print $1}')
+
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint function 6
+partition = ${PARTITION}
+end
+
         has_filesystem ${PARTITION}
         if [ ${?} -ne 0 ];
         then
@@ -250,6 +320,10 @@ scan_partition_format()
         mount "${MOUNTPOINT}"
     done
 }
+
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint8
+end
 
 create_striped_volume()
 {
@@ -303,6 +377,10 @@ create_striped_volume()
     mount "${MOUNTPOINT}"
 }
 
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint9
+end
+
 check_mdadm() {
     dpkg -s mdadm >/dev/null 2>&1
     if [ ${?} -ne 0 ]; then
@@ -311,8 +389,16 @@ check_mdadm() {
     fi
 }
 
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint10
+end
+
 # Create Partitions
 DISKS=$(scan_for_new_disks)
+cat >> ~/diskutilsdebug.txt <<end
+checkpoint create...partitions
+disks = ${DISKS[@]}
+end
 
 if [ "$RAID_CONFIGURATION" -eq 1 ]; then
     check_mdadm
