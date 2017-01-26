@@ -309,7 +309,7 @@
         "version": "1.0.9"
       },
       "scripts": [
-        "[concat(variables('templateBaseUrl'), 'scripts/', 'vm-disk-utils-0.1.sh')]",
+        "[concat('https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/splunk-on-ubuntu/', 'scripts/', 'vm-disk-utils-0.1.sh')]",
         "[concat(variables('templateBaseUrl'), 'scripts/', 'node-setup.sh')]"
       ]
     },
