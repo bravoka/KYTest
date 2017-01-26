@@ -47,15 +47,6 @@
         "description": "Size of cluster search head VM"
       }
     },
-    "clusterSearchheadVmCount": {
-      "type": "int",
-      "defaultValue": 3,
-      "minValue": 3,
-      "maxValue": 10,
-      "metadata": {
-        "description": "Count of search heads"
-      }
-    },
     "clusterIndexerVmSize": {
       "type": "string",
       "defaultValue": "Standard_D3_v2",
@@ -192,7 +183,7 @@
     },
     "templateLocation": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/bravoka/KYTest/master",
+      "defaultValue": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/splunk-on-ubuntu",
       "metadata": {
         "description": "Template file location",
         "artifactsBaseUrl": "Base URL of the Publisher Template gallery package"
@@ -247,15 +238,14 @@
       "clusterMasterTemplateUrl": "[concat(variables('templateBaseUrl'), 'nested/', 'clustermaster-resources.json')]",
       "clusterSearchheadTemplateUrl": "[concat(variables('templateBaseUrl'), 'nested/', 'clustersearchhead-resources.json')]",
       "clusterPeersTemplateUrl": "[concat(variables('templateBaseUrl'), 'nested/', 'clusterpeers-resources.json')]",
-	  "clusterSearchheadCount": "[parameters('clusterSearchheadVmCount')]",
       "clusterPeersCount": "[parameters('clusterIndexerVmCount')]",
       "availabilitySetCount": 3,
       "publicIPAddress": {
         "name": "[parameters('publicIPName')]",
         "domainNamePrefix": "[parameters('domainNamePrefix')]",
-        "count": "[add(4, parameters('clusterIndexerVmCount'))]",
+        "count": "[add(2, parameters('clusterIndexerVmCount'))]",
         "map": [
-          "-csh0", "-csh1", "-csh2", "-cm",
+          "", "-cm",
           "-cp0", "-cp1", "-cp2", "-cp3", "-cp4",
           "-cp5", "-cp6", "-cp7", "-cp8", "-cp9",
           "-cp10", "-cp11", "-cp12", "-cp13", "-cp14",
@@ -265,7 +255,7 @@
       "storage": {
         "name": "[variables('storageAccountNamePrefix')]",
         "type": "[parameters('storageAccountType')]",
-        "count": "[div(sub(add(add(4, parameters('clusterIndexerVmCount')), variables('nodesPerStorageAccount')), 1), variables('nodesPerStorageAccount'))]",
+        "count": "[div(sub(add(add(2, parameters('clusterIndexerVmCount')), variables('nodesPerStorageAccount')), 1), variables('nodesPerStorageAccount'))]",
         "map": [
           0, 1, 1, 0, 1, 1,
           2, 2, 2, 2, 3, 3, 3, 3,
@@ -274,10 +264,6 @@
       }
     },
     "tshirtSize": "[variables(concat('tshirtSize', parameters('deploymentType')))]",
-    "sa1": "[parameters('subnet1StartAddress')]",
-    "shIpOctet01": "[concat(split(variables('sa1'), '.')[0], '.', split(variables('sa1'), '.')[1], '.')]",
-    "shIpOctet2": "[int(split(variables('sa1'), '.')[2])]",
-    "shIpOctet3": "[int(split(variables('sa1'), '.')[3])]",
     "sa2": "[parameters('subnet2StartAddress')]",
     "ipOctet01": "[concat(split(variables('sa2'), '.')[0], '.', split(variables('sa2'), '.')[1], '.')]",
     "ipOctet2": "[int(split(variables('sa2'), '.')[2])]",
@@ -300,11 +286,7 @@
       },
       "statics": {
         "standaloneIp": "[parameters('subnet1StartAddress')]",
-        "searchheadIps": {
-	  "shIpOctet01": "[variables('ipOctet01')]",
-          "shIpOctet2": "[add(variables('ipOctet2'), div(add(variables('ipOctet3'), 1), 255))]",
-          "shIpOctet3": "[mod(add(variables('ipOctet3'), 1), 255)]"
-		},
+        "clusterSearchheadIp": "[parameters('subnet1StartAddress')]",
         "clusterMasterIp": "[parameters('subnet2StartAddress')]",
         "indexerIps": {
           "ipOctet01": "[variables('ipOctet01')]",
@@ -520,7 +502,7 @@
             "value": {
               "vmSize": "[variables('tshirtSize').clusterSearchheadVmSize]",
               "diskSize": "[variables('tshirtSize').diskSize]",
-              "staticIps": "[variables('networkSettings').statics.searchheadIps]",
+              "staticIp": "[variables('networkSettings').statics.clusterSearchheadIp]",
               "clusterMasterIp": "[variables('networkSettings').statics.clusterMasterIp]",
               "publicIPName": "[concat(variables('tshirtSize').publicIPAddress.name, '')]",
               "sshFrom": "[concat(parameters('sshFrom'), '')]",
