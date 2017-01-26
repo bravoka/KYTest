@@ -519,7 +519,7 @@
           "machineSettings": {
             "value": {
               "vmSize": "[variables('tshirtSize').clusterSearchheadVmSize]",
-			  "vmCount: "[variables('tshirtSize').clusterSearchheadCount]",
+	      "vmCount": "[variables('tshirtSize').clusterSearchheadCount]",
               "diskSize": "[variables('tshirtSize').diskSize]",
               "staticIps": "[variables('networkSettings').statics.searchheadIps]",
               "clusterMasterIp": "[variables('networkSettings').statics.clusterMasterIp]",
