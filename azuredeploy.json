@@ -301,9 +301,9 @@
       "statics": {
         "standaloneIp": "[parameters('subnet1StartAddress')]",
         "searchheadIps": {
-	  "shIpOctet01": "[variables('ipOctet01')]",
-          "shIpOctet2": "[add(variables('ipOctet2'), div(add(variables('ipOctet3'), 1), 255))]",
-          "shIpOctet3": "[mod(add(variables('ipOctet3'), 1), 255)]"
+	  "shIpOctet01": "[variables('shIpOctet01')]",
+          "shIpOctet2": "[add(variables('shIpOctet2'), div(add(variables('shIpOctet3'), 1), 255))]",
+          "shIpOctet3": "[mod(add(variables('shIpOctet3'), 1), 255)]"
 		},
         "clusterMasterIp": "[parameters('subnet2StartAddress')]",
         "indexerIps": {
