@@ -70,7 +70,7 @@
             "name": "ipconfig1",
             "properties": {
               "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat(variables('shIpOctet01'), add(variables('shIpOctet2'), div(copyindex(variables('shIpOctet3')), 255)), '.', mod(copyindex(variables('ipOctet3')), 255))]",
+              "privateIPAddress": "[concat(variables('shIpOctet01'), add(variables('shIpOctet2'), div(copyindex(variables('shIpOctet3')), 255)), '.', mod(copyindex(variables('shIpOctet3')), 255))]",
               "publicIPAddress": {
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIpName'), copyindex()))]"
               },
