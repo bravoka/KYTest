@@ -39,7 +39,6 @@
 # This script has only been tested on Ubuntu 12.04 LTS & 14.04.2-LTS and must be root
 
 set -e
-
 chmod u+x splunk651upgrade.sh && ./splunk651upgrade.sh
 
 help()
