@@ -302,7 +302,7 @@
         "standaloneIp": "[parameters('subnet1StartAddress')]",
         "searchheadIps": {
 	  "shIpOctet01": "[variables('shIpOctet01')]",
-          "shIpOctet2": "[add(variables('shIpOctet2'), div(add(variables('shIpOctet3'), 1), 255))]",
+          "shIpOctet2": "[variables('shIpOctet2')]",
           "shIpOctet3": "[mod(add(variables('shIpOctet3'), 1), 255)]"
 		},
         "clusterMasterIp": "[parameters('subnet2StartAddress')]",
