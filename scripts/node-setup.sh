@@ -42,8 +42,6 @@
 
 set -e
 
-chmod +x splunk651upgrade.sh && ./splunk651upgrade.sh
-
 cat >> ~/vars.txt <<end
 hostname = ${HOSTNAME}
 uid = ${UID}
