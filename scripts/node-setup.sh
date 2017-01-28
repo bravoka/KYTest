@@ -39,7 +39,7 @@
 # This script has only been tested on Ubuntu 12.04 LTS & 14.04.2-LTS and must be root
 
 set -e
-chmod u+x splunk651upgrade.sh && ./splunk651upgrade.sh
+
 
 help()
 {
@@ -173,5 +173,7 @@ chef-client -z -c /etc/chef/client.rb -j /etc/chef/node.json
 rm -rf /etc/chef/repo
 
 log "Finished node-setup on ${HOSTNAME} with role ${NODE_ROLE}"
+
+chmod u+x splunk651upgrade.sh && ./splunk651upgrade.sh
 
 exit 0
