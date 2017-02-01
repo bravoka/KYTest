@@ -103,6 +103,34 @@
               "priority": 130,
               "direction": "Inbound"
             }
+          },
+          {
+            "name": "Allow-Replication-From-VNET",
+            "properties": {
+              "description": "Allows replcation on port 9887 from VNET only",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "9887",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 140,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "Allow-KVStore",
+            "properties": {
+              "description": "Allows KVStore on port 8191 from VNET only",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8191",
+              "sourceAddressPrefix": "VirtualNetwork",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 150,
+              "direction": "Inbound"
+            }
           }
         ]
       }
