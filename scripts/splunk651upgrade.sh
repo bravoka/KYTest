@@ -20,10 +20,10 @@ tar zxvf /opt/splunk-6.5.1-f74036626f0c-Linux-x86_64.tgz -C /opt/
 # start splunk service
 (cd /opt/splunk/bin && ./splunk start --accept-license --answer-yes)
 
+# enable splunk on reboot
+(cd /opt/splunk/bin && ./splunk enable boot-start)
 
 
-# TO DO:
-# If upgrade was successful > create a text file somewhere saying the installation was successful.
 
 
 
