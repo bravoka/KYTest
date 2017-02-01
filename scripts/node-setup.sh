@@ -156,10 +156,12 @@ end
 
 log "Update iptables before running Splunk"
 
-# Open replication ports for KVStore and Replication, if SH cluster
-if [${NODE_ROLE} -eq " "]; then
+# Open replication ports for KVStore and Replication, if this is an SH member
+if [ $NODE_ROLE == "splunk_cluster_search_head" ]; then
   iptables -I INPUT -p tcp --dport 9887 -j ACCEPT
-  iptables -I INPUT -p tcp --dport 8191 -j ACCEPT  
+  iptables -I INPUT -p tcp --dport 8191 -j ACCEPT   
+  ip6tables -I INPUT -p tcp --dport 9887 -j ACCEPT
+  ip6tables -I INPUT -p tcp --dport 8191 -j ACCEPT 
 fi
 
 # Port forwarding for system ports: 443->10443, 514->10514
